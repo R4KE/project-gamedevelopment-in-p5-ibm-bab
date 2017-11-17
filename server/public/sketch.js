@@ -99,16 +99,16 @@ if (points < 5){
   sendmouse(x,y);
 
   if (keyIsDown(65)) {
-      x -= 3;
+      x -= innerWidth/300;
       return false;
   } else if (keyIsDown(68)) {
-      x += 3;
+      x += innerWidth/300;
       return false;
   } else if (keyIsDown(87)) {
-      y -= 3;
+      y -= innerHeight/300;
       return false;
   } else if (keyIsDown(83)) {
-      y += 3;
+      y += innerHeight/300;
       return false;
   }
 }
@@ -130,8 +130,8 @@ function sendmouse(xpos, ypos) {
 
 
 function Enemyobject(ex, ey, color) {
-    this.xPos = ex - random(2, 10);
-    this.yPos = ey - random(2, 10);
+    this.xPos = ex;
+    this.yPos = ey;
 
     this.teken = function() {
       fill(180, 20, 20);
