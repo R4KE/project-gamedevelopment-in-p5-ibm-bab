@@ -20,6 +20,7 @@ function draw() {
   line(0, 0, 0, -50);
   pop();
   console.log(degree);
+  translate(0, 0);
   ellipse(20, 20, 20, 20);
 
   if (degree <= 0) {
@@ -33,15 +34,12 @@ function draw() {
       degree += rotatespd;
       return false;
   } else if (keyIsDown(87)) {
-      this.xSpeed -= Math.sin(this.direction);
-      this.ySpeed += Math.cos(this.direction);
+      x -= Math.sin(this.direction);
+      y += Math.cos(this.direction);
       return false;
   } else if (keyIsDown(83)) {
     this.xSpeed += Math.sin(this.direction);
     this.ySpeed -= Math.cos(this.direction);
       return false;
   }
-
-  translate(0, 0);
-  ellipse(20, 20, 20, 20)
 }
