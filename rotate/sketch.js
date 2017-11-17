@@ -1,7 +1,7 @@
-let x = innerWidth/2;
+let x = innerWidth/2-200;
 let y = innerHeight/2;
-let degree = 1;
-let rotatespd = 0.05
+let degree = 90;
+let rotatespd = 1;
 let spd = 2;
 
 function setup(){
@@ -12,9 +12,16 @@ function setup(){
 function draw() {
   background(255);
   translate(x/2, y/2);
-  rotate(degree);
+  rotate(degree / 57.25);
   rectMode(CENTER);
-  rect(0, 0, 100, 50);
+  rect(0, 0, 50, 50);
+  stroke(200);
+  line(0, 0, 0, -50);
+  console.log(degree);
+
+  if (degree <= 0) {
+    degree = 360;
+  }
 
   if (keyIsDown(65)) {
       degree -= rotatespd;
@@ -29,4 +36,6 @@ function draw() {
       y += spd;
       return false;
   }
+
+  translate(0, 0);
 }
