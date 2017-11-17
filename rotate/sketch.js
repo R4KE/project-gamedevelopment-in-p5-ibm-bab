@@ -6,18 +6,21 @@ let spd = 2;
 
 function setup(){
   createCanvas(innerWidth - 20, innerHeight - 20);
-
+  angleMode(RADIANS);
 }
 
 function draw() {
   background(255);
   translate(x/2, y/2);
+  push();
   rotate(degree / 57.25);
   rectMode(CENTER);
   rect(0, 0, 50, 50);
   stroke(200);
   line(0, 0, 0, -50);
+  pop();
   console.log(degree);
+  ellipse(20, 20, 20, 20);
 
   if (degree <= 0) {
     degree = 360;
@@ -30,12 +33,14 @@ function draw() {
       degree += rotatespd;
       return false;
   } else if (keyIsDown(87)) {
-      y -= spd;
+      this.xSpeed -= Math.sin(this.direction);
+      this.ySpeed += Math.cos(this.direction);
       return false;
   } else if (keyIsDown(83)) {
-      y += spd;
+      y += Math.sin(degree * Math.PI / 180)*spd;
       return false;
   }
 
   translate(0, 0);
+  ellipse(20, 20, 20, 20)
 }

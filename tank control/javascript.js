@@ -36,11 +36,8 @@ function draw() {
     win.play();
   }
   noStroke();
-  pl.display();
-  var rots = rots + rotspeed;
   pl.move();
-  var axis = (this.xpos+this.rad, this.ypos);
-  rotate(rot,[axis]);
+  pl.display();
 }
 
 function Player() {
@@ -89,6 +86,10 @@ function Player() {
       else if (this.ypos > ySize){
         this.ypos = ySize
       }
+      var rots = rots + rotspeed;
+      translate(this.xpos, this.ypos)
+      var axis = (this.xpos+this.rad, this.ypos);
+      rotate(rot,[axis]);
 
   }
 }
