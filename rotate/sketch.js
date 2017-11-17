@@ -11,8 +11,8 @@ function setup(){
 
 function draw() {
   background(255);
-  translate(x/2, y/2);
   push();
+  translate(x/2, y/2);
   rotate(degree / 57.25);
   rectMode(CENTER);
   rect(0, 0, 50, 50);
@@ -37,7 +37,8 @@ function draw() {
       this.ySpeed += Math.cos(this.direction);
       return false;
   } else if (keyIsDown(83)) {
-      y += Math.sin(degree * Math.PI / 180)*spd;
+    this.xSpeed += Math.sin(this.direction);
+    this.ySpeed -= Math.cos(this.direction);
       return false;
   }
 
