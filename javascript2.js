@@ -36,12 +36,11 @@ function draw() {
     win.play();
   }
   noStroke();
-  //var axis = (this.xpos+this.radius/2, this.ypos+this.radius/2);
-  //rotate(rot,[axis]);
   pl.display();
   var rots = rots + rotspeed;
   pl.move();
-  pl.rotate(rots);
+  var axis = (this.xpos+this.rad, this.ypos);
+  rotate(rot,[axis]);
 }
 
 function Player() {
@@ -56,8 +55,6 @@ function Player() {
     fill(127, 255, 0);
     rect(this.xpos, this.ypos, 2*this.radius, 2*this.radius);
   }
-
-
 
   this.move = function() {
       if (keyIsDown(32)){
