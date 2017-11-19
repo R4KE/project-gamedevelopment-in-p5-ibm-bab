@@ -21,10 +21,7 @@ function listen() {
 app.use(express.static('public'));
 
 function Setup() {
-  textSize(16);
-  fill(0);
-  noStroke();
-  text(online, 200, 20)
+  //nothing
 }
 
 // WebSocket Portion
@@ -44,6 +41,7 @@ io.sockets.on('connection',
       function(data) {
         // Data comes in as whatever was sent, including objects
         console.log("Received: 'pos' " + data.x + " " + data.y);
+        console.log("online")
 
         // Send it to all other clients
         socket.broadcast.emit('pos', data);

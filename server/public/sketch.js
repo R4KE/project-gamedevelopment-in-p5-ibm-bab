@@ -16,7 +16,7 @@ function setup() {
   y = random(20, innerHeight - 90);
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
-  socket = io.connect('http://192.168.16.1:3000/');
+  socket = io.connect('http://192.168.2.24:3000/');
   // We make a named event called 'mouse' and write an
   // anonymous callback function
   socket.on('pos',
@@ -40,7 +40,7 @@ function setup() {
   for (var i = 0; i < aantalenemies; i++) {
         enemy = new Enemyobject(ex, ey);
         enemies.push(enemy);
-    }
+  }
 }
 
 function draw() {
@@ -52,35 +52,35 @@ function draw() {
   fill(180, 20, 20);
   text("YOU", x - 13, y - 20);
 
-if (x < 0){
-  points--;
-}
-
-if (y < 0){
-  points--;
-}
-
-if (x > innerWidth - 70){
-  points--;
-}
-
-if (y > innerHeight - 90){
-  points--;
-}
-
-if (points < 0){
-  points = 0;
-}
-
-if (points < 5){
-    textSize(70);
-    fill(0);
-    text(points, 50, 80);
-  } else {
-    textSize(70);
-    fill(0);
-    text("WIN", 50, 80);
+  if (x < 0){
+    points--;
   }
+
+  if (y < 0){
+    points--;
+  }
+
+  if (x > innerWidth - 70){
+    points--;
+  }
+
+  if (y > innerHeight - 90){
+    points--;
+  }
+
+  if (points < 0){
+    points = 0;
+  }
+
+  if (points < 5){
+      textSize(70);
+      fill(0);
+      text(points, 50, 80);
+    } else {
+      textSize(70);
+      fill(0);
+      text("WIN", 50, 80);
+    }
 
 
   fill(80, 80, 150);
@@ -95,20 +95,20 @@ if (points < 5){
   fill(180, 20, 20);
   noStroke();
   ellipse(x,y,20,20);
-  // Send the mouse coordinates
+  // Send the ball coordinates
   sendmouse(x,y);
 
   if (keyIsDown(65)) {
-      x -= innerWidth/300;
+      x -= 3;
       return false;
   } else if (keyIsDown(68)) {
-      x += innerWidth/300;
+      x += 3;
       return false;
   } else if (keyIsDown(87)) {
-      y -= innerHeight/300;
+      y -= 3;
       return false;
   } else if (keyIsDown(83)) {
-      y += innerHeight/300;
+      y += 3;
       return false;
   }
 }
