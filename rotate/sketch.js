@@ -6,28 +6,12 @@ function setup() {
   angleMode(RADIANS);
 }
 
-<<<<<<< HEAD
 function wall(X,Y) {
   this.xPos = X;
   this.yPos = Y;
   this.xbullet = 100;
   this.ybullet = 100;
 }
-=======
-function draw() {
-  background(255);
-  push();
-  translate(x/2, y/2);
-  rotate(degree / 57.25);
-  rectMode(CENTER);
-  rect(0, 0, 50, 50);
-  stroke(200);
-  line(0, 0, 0, -50);
-  pop();
-  console.log(degree);
-  translate(0, 0);
-  ellipse(20, 20, 20, 20);
->>>>>>> d48f7cf0e4453ffb6e6cd2aecb7cc17dcb75b657
 
 function player() {
   this.xPos = 100;
@@ -78,7 +62,6 @@ function player() {
     this.ybullet = this.ybulletspd * 3;//bullet
   }
 
-<<<<<<< HEAD
   this.render = function() {
     stroke(20);
     fill(250, 20, 20);
@@ -101,22 +84,6 @@ function player() {
     fill(250, 20, 20);
     ellipse(0, 0, 40, 40);
     pop();
-=======
-  if (keyIsDown(65)) {
-      degree -= rotatespd;
-      return false;
-  } else if (keyIsDown(68)) {
-      degree += rotatespd;
-      return false;
-  } else if (keyIsDown(87)) {
-      x -= Math.sin(this.direction);
-      y += Math.cos(this.direction);
-      return false;
-  } else if (keyIsDown(83)) {
-    this.xSpeed += Math.sin(this.direction);
-    this.ySpeed -= Math.cos(this.direction);
-      return false;
->>>>>>> d48f7cf0e4453ffb6e6cd2aecb7cc17dcb75b657
   }
 }
 
@@ -130,4 +97,4 @@ function draw() {
     Player.render();
 }
 
-// credits naat thijs voor de game logics
+// credits naar thijs voor de game logics
