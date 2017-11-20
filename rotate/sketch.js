@@ -76,7 +76,7 @@ function player() {
     rect(17.5, 0.5, 10, 59)// right shadow
     noStroke();
     fill(50);
-    ellipse(this.xbullet, this.ybullet, 5, 5);
+    ellipse(this.xbullet, this.ybullet, 5, 5);// draw bullet
     fill(219, 17, 17);
     stroke(20);
     rectMode(CORNER);
@@ -97,4 +97,4 @@ function draw() {
     Player.render();
 }
 
-// credits naar thijs voor de game logics
+// credits naar thijs voor wat game logics
