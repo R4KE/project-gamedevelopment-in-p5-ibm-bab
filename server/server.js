@@ -21,7 +21,14 @@ function listen() {
 app.use(express.static('public'));
 
 function Setup() {
-  //nothing
+
+}
+
+function newPlayer() {
+  playerID = prompt("choose a name: ", "Tank - Name");
+  if(){
+
+  }
 }
 
 // WebSocket Portion
@@ -35,7 +42,7 @@ io.sockets.on('connection',
   function (socket) {
 
     console.log("We have a new client: " + socket.id);
-    online++;
+    online = online + 1;
     // When this user emits, client side: socket.emit('otherevent',some data);
     socket.on('pos',
       function(data) {
@@ -50,7 +57,7 @@ io.sockets.on('connection',
 
     socket.on('disconnect', function() {
       console.log("Client has disconnected");
-      online--;
+      online = online - 1;
     });
   }
 );
