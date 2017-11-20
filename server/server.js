@@ -41,13 +41,9 @@ io.sockets.on('connection',
       function(data) {
         // Data comes in as whatever was sent, including objects
         console.log("Received: 'pos' " + data.x + " " + data.y);
-        console.log("online")
 
         // Send it to all other clients
         socket.broadcast.emit('pos', data);
-
-        // This is a way to send to everyone including sender
-        // io.sockets.emit('message', "this goes to everyone");
 
       }
     );

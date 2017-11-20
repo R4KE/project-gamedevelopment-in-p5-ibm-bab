@@ -13,10 +13,13 @@ var color;
 function setup() {
   createCanvas(innerWidth - 50, innerHeight - 70);
   x = random(20, innerWidth - 70);
+  x = Math.floor(x);
   y = random(20, innerHeight - 90);
+  y = Math.floor(y);
+  last_xy = [x, y];
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
-  socket = io.connect('http://192.168.2.24:3000/');
+  socket = io.connect('http://localhost:3000/');
   // We make a named event called 'mouse' and write an
   // anonymous callback function
   socket.on('pos',
@@ -32,7 +35,9 @@ function setup() {
       dy = data.y - y;
       if (sqrt(dx*dx + dy*dy) <= 20){
         x = random(20, innerWidth - 70);
+        x = Math.floor(x);
         y = random(20, innerHeight - 90);
+        y = Math.floor(y);
         points++;
       }
     }
@@ -96,21 +101,25 @@ function draw() {
   noStroke();
   ellipse(x,y,20,20);
   // Send the ball coordinates
-  sendmouse(x,y);
 
   if (keyIsDown(65)) {
       x -= 3;
+      sendmouse(x,y);
       return false;
   } else if (keyIsDown(68)) {
       x += 3;
+      sendmouse(x,y);
       return false;
   } else if (keyIsDown(87)) {
       y -= 3;
+      sendmouse(x,y);
       return false;
   } else if (keyIsDown(83)) {
       y += 3;
+      sendmouse(x,y);
       return false;
   }
+  last_xy = [x,y];
 }
 
 // Function for sending to the socket
