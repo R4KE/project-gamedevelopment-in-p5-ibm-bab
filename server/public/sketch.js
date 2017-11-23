@@ -1,5 +1,5 @@
 var socket;
-var enemies = [];
+var players = [];
 var x;
 var y;
 var dx;
@@ -9,8 +9,8 @@ var ey;
 var points = 0;
 var aantalplayers = 0;
 var color;
-var playerID = prompt("choose a name: ", "TankName");
-var eplayerID;
+var playerID = "zesrxdtcfyvgbhjnkbhvugycftxfcygvhbkjbhvuctryvuhbjnbivuc";
+var eplayerID = "ENEMY";
 
 function setup() {
   createCanvas(innerWidth - 50, innerHeight - 70);
@@ -30,9 +30,6 @@ function setup() {
       console.log("Got: " + data.x + " " + data.y + " " + data.playerID);
       // Draw a blue circle
 
-      ex = data.x;
-      ey = data.y;
-      eplayerID = data.playerID;
 
       dx = data.x - x;
       dy = data.y - y;
@@ -41,6 +38,7 @@ function setup() {
         x = Math.floor(x);
         y = random(20, innerHeight - 90);
         y = Math.floor(y);
+        sendmouse(x,y,playerID);
         points++;
       }
     }
@@ -52,24 +50,28 @@ function draw() {
 
   textSize(12);
   fill(80, 80, 150);
-  text(eplayerID, ex - 21, ey - 20);
+  text(eplayerID, ex - playerID.length * (playerID.length / 2), ey - 20);
   fill(180, 20, 20);
-  text(playerID, x - 13, y - 20);
+  text(playerID, x - eplayerID.length * (eplayerID.length / 2), y - 20);
 
   if (x < 0){
     points--;
+    console.log("je bent uit het veld");
   }
 
   if (y < 0){
     points--;
+    console.log("je bent uit het veld");
   }
 
   if (x > innerWidth - 70){
     points--;
+    console.log("je bent uit het veld");
   }
 
   if (y > innerHeight - 90){
     points--;
+    console.log("je bent uit het veld");
   }
 
   if (points < 0){
@@ -99,18 +101,22 @@ function draw() {
   if (keyIsDown(65)) {
       x -= 3;
       sendmouse(x,y,playerID);
+      tick = 0;
       return false;
   } else if (keyIsDown(68)) {
       x += 3;
       sendmouse(x,y,playerID);
+      tick = 0;
       return false;
   } else if (keyIsDown(87)) {
       y -= 3;
       sendmouse(x,y,playerID);
+      tick = 0;
       return false;
   } else if (keyIsDown(83)) {
       y += 3;
       sendmouse(x,y,playerID);
+      tick = 0;
       return false;
   }
   last_xy = [x,y];
@@ -132,8 +138,7 @@ function sendmouse(xpos, ypos, playerName) {
   socket.emit('pos',data);
 }
 
-
-function Enemyobject(ex, ey, color) {
+function Enemyobject(ex, ey, naam) {
     this.xPos = ex;
     this.yPos = ey;
 
@@ -142,4 +147,7 @@ function Enemyobject(ex, ey, color) {
       noStroke();
       ellipse(ex,ey,20,20);
     }
+    //this.checkfor(){
+
+    //}
 }
