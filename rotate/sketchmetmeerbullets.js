@@ -1,6 +1,9 @@
 let direction = 0;
 var bullets = [];
 var bulletsshot = 0;
+var cooldown = 0;
+var cooldowntimer = 10;
+var variabele = 0;
 
 function setup() {
   createCanvas(innerWidth - 20, innerHeight - 20);
@@ -14,6 +17,11 @@ var Player = new player();
 
 function draw() {
   background(255);
+  for (i = 0; i < bulletsshot; i++) {
+    var bullet1 = bullets[i];
+    bullet1.teken();
+    bullet1.beweeg();
+  }
   fill(0, 255, 0);
   noStroke();
   Player.controls();
@@ -24,6 +32,8 @@ function draw() {
     bullet1.teken();
     bullet1.beweeg();
   }
+
+  cooldown += 1;
 }
 
 function player() {
@@ -35,28 +45,34 @@ function player() {
 
 
   this.controls = function() {
-    if (keyIsDown(65)) { //a
-      this.direction -= 0.03;
-    }
-    if (keyIsDown(68)) { //d
-      this.direction += 0.03;
-    }
-    if (keyIsDown(87)) { //w
-      this.xSpeed -= Math.sin(this.direction);
-      this.ySpeed += Math.cos(this.direction);
-    }
-    if (keyIsDown(83)) { //s
-      this.xSpeed += Math.sin(this.direction);
-      this.ySpeed -= Math.cos(this.direction);
-    }
     if (keyIsDown(32)) { //"space"
+      if (cooldown > cooldowntimer){
         bulletsshot += 1;
         console.log("new bullet");
-        bullets.push(new Bullet(this.xPos, this.yPos, 10, Math.sin(this.direction) * -1, Math.cos(this.direction)));
+        bullets.push(new Bullet(this.xPos, this.yPos, 10, Math.sin(this.direction) * -5, Math.cos(this.direction) * 5));
+        cooldown = 0;
+      }
+      return false;
+    } else {
+      if (keyIsDown(65)) { //a
+        this.direction -= 0.03;
+      }
+      if (keyIsDown(68)) { //d
+        this.direction += 0.03;
+      }
+      if (keyIsDown(87)) { //w
+        this.xSpeed -= Math.sin(this.direction);
+        this.ySpeed += Math.cos(this.direction);
+      }
+      if (keyIsDown(83)) { //s
+        this.xSpeed += Math.sin(this.direction);
+        this.ySpeed -= Math.cos(this.direction);
+      }
+      if (keyIsDown(82)) { //r
+        //c4ode
+      }//reload
     }
-    if (keyIsDown(82)) { //r
-      //code
-    }//reload
+
     this.xPos += this.xSpeed;
     this.yPos += this.ySpeed;
     this.xSpeed = this.xSpeed * 0.6;
@@ -104,7 +120,11 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
 
   this.beweeg = function() {
     this.x += this.xspeed;
-    this.y += this.yspeed
+    this.y += this.yspeed;
+
+    if (this.x > innerWidth - 20) {
+      bullets.splice(bullets.indexOf(this), 1);
+    }
   }
 }
 
