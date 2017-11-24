@@ -24,13 +24,6 @@ function Setup() {
 
 }
 
-function newPlayer() {
-  playerID = prompt("choose a name: ", "Tank - Name");
-  if(){
-
-  }
-}
-
 // WebSocket Portion
 // WebSockets work with the HTTP server
 var io = require('socket.io')(server);
