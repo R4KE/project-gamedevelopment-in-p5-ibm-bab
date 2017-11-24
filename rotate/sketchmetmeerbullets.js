@@ -1,5 +1,6 @@
 let direction = 0;
-let shot = 1;
+var bullets = [];
+var bulletsshot = 0;
 
 function setup() {
   createCanvas(innerWidth - 20, innerHeight - 20);
@@ -7,16 +8,32 @@ function setup() {
 }
 
 
+var Player = new player();
+
+//bullets.push(new Bullet(10, 10, 10, 3, 3));
+
+function draw() {
+  background(255);
+  fill(0, 255, 0);
+  noStroke();
+  Player.controls();
+  Player.render();
+
+  for (i = 0; i < bulletsshot; i++) {
+    var bullet1 = bullets[i];
+    bullet1.teken();
+    bullet1.beweeg();
+  }
+}
+
 function player() {
   this.xPos = 100;
   this.yPos = 100;
-  this.xbullet = 100;
-  this.ybullet = 100;
   this.xSpeed = 0;
   this.ySpeed = 0;
-  this.xbulletspd = 0;
-  this.ybulletspd = 0;
   this.direction = 0;
+
+
   this.controls = function() {
     if (keyIsDown(65)) { //a
       this.direction -= 0.03;
@@ -32,28 +49,18 @@ function player() {
       this.xSpeed += Math.sin(this.direction);
       this.ySpeed -= Math.cos(this.direction);
     }
-    if (keyIsDown(32)) { //" "
-        shot = 2;
-        console.log(shot);
+    if (keyIsDown(32)) { //"space"
+        bulletsshot += 1;
+        console.log("new bullet");
+        bullets.push(new Bullet(this.xPos, this.yPos, 10, Math.sin(this.direction) * -1, Math.cos(this.direction)));
     }
-    if (shot == 2) {
-      this.xbulletspd -= Math.sin(direction);
-      this.ybulletspd += Math.cos(direction);
-    }//shoot
     if (keyIsDown(82)) { //r
-      shot = 1;
-      console.log(shot);
-      this.xbulletspd = 0;
-      this.ybulletspd = 0;
+      //code
     }//reload
     this.xPos += this.xSpeed;
     this.yPos += this.ySpeed;
-    this.xbullet += this.xbulletspd;//bullet
-    this.ybullet += this.ybulletspd;//bullet
     this.xSpeed = this.xSpeed * 0.6;
     this.ySpeed = this.ySpeed * 0.6;
-    this.xbullet = this.xbulletspd * 3;//bullet
-    this.ybullet = this.ybulletspd * 3;//bullet
   }
 
   this.render = function() {
@@ -69,8 +76,8 @@ function player() {
     rect(-16.5, 0.5, 10, 59)// left shadow
     rect(17.5, 0.5, 10, 59)// right shadow
     noStroke();
-    fill(50);
-    ellipse(this.xbullet, this.ybullet, 10, 30);// draw bullet
+    //fill(50);
+    //ellipse(this.xbullet, this.ybullet, 5, 5);// draw bullet
     fill(219, 17, 17);
     stroke(20);
     rectMode(CORNER);
@@ -81,14 +88,24 @@ function player() {
   }
 }
 
-var Player = new player();
+function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
+  this.x = _x;
+  this.y = _y;
+  this.straal = _straal;
+  this.xspeed = _xspeed;
+  this.yspeed = _yspeed;
+  this.shot = 0;
 
-function draw() {
-    background(255);
-    fill(0, 255, 0);
+  this.teken = function() {
     noStroke();
-    Player.controls();
-    Player.render();
+    fill(20);
+    ellipse(this.x, this.y, this.straal, this.straal);
+  }
+
+  this.beweeg = function() {
+    this.x += this.xspeed;
+    this.y += this.yspeed
+  }
 }
 
 // credits naar thijs voor wat game logics
