@@ -1,7 +1,7 @@
 var socket;
 var xcanvas = innerWidth - 20;
 var ycanvas = innerHeight - 20;
-var enemyplayers = [];
+var players = [];
 var speed = 6;
 var x;
 var y;
@@ -32,20 +32,21 @@ function setup() {
     // When we receive data
     function(data) {
       console.log("pull: " + data.x + " " + data.y + " " + data.playerID);
+      // Draw a blue circle
 
       ex = data.x;
       ey = data.y;
 
-      /*dx = data.x - x;
+      dx = data.x - x;
       dy = data.y - y;
-      if (sqrt(dx*dx + dy*dy) <= 20){ //collision
+      if (sqrt(dx*dx + dy*dy) <= 20){
         x = random(20, innerWidth - 70);
         x = Math.floor(x);
         y = random(20, innerHeight - 90);
         y = Math.floor(y);
         sendmouse(x,y,playerID);
         points++;
-      }*/
+      }
     }
   );
 }
@@ -163,20 +164,5 @@ function Enemyobject(ex, ey, eplayerID) {
       fill(180, 20, 20);
       noStroke();
       ellipse(ex,ey,20,20);
-    }
-}
-
-function Enemyplayer(ex, ey, eplayerID, col1, col2, col3) {
-    this.xPos = ex;
-    this.yPos = ey;
-    this.eID = eplayerID;
-    this.red = col1;
-    this.green = col2;
-    this.blue = col3;
-
-    this.teken = function() {
-      fill(this.red, this.green, this.blue);
-      noStroke();
-      ellipse(this.xPos, this.yPos, 20, 20);
     }
 }
