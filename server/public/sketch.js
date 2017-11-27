@@ -1,5 +1,8 @@
 var socket;
+var xcanvas = innerWidth - 20;
+var ycanvas = innerHeight - 20;
 var players = [];
+var speed = 6;
 var x;
 var y;
 var dx;
@@ -9,16 +12,17 @@ var ey;
 var points = 0;
 var aantalplayers = 0;
 var color;
-var playerID = "zesrxdtcfyvgbhjnkbhvugycftxfcygvhbkjbhvuctryvuhbjnbivuc";
+var playerID = "YOU";
 var eplayerID = "ENEMY";
+var IDlength;
+var eIDlength;
 
 function setup() {
-  createCanvas(innerWidth - 50, innerHeight - 70);
+  createCanvas(xcanvas, ycanvas);
   x = random(20, innerWidth - 70);
   x = Math.floor(x);
   y = random(20, innerHeight - 90);
   y = Math.floor(y);
-  last_xy = [x, y];
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
   socket = io.connect('http://localhost:3000/');
@@ -27,9 +31,11 @@ function setup() {
   socket.on('pos',
     // When we receive data
     function(data) {
-      console.log("Got: " + data.x + " " + data.y + " " + data.playerID);
+      console.log("pull: " + data.x + " " + data.y + " " + data.playerID);
       // Draw a blue circle
 
+      ex = data.x;
+      ey = data.y;
 
       dx = data.x - x;
       dy = data.y - y;
@@ -48,11 +54,14 @@ function setup() {
 function draw() {
   background(255);
 
+  //IDlength = playerID.
+  //eIDlength = len(eplayerID);
+
   textSize(12);
   fill(80, 80, 150);
-  text(eplayerID, ex - playerID.length * (playerID.length / 2), ey - 20);
+  text(eplayerID, ex - eplayerID.length / 1.5 * 5, ey - 20);
   fill(180, 20, 20);
-  text(playerID, x - eplayerID.length * (eplayerID.length / 2), y - 20);
+  text(playerID, x - playerID.length / 1.5 * 5, y - 20);
 
   if (x < 0){
     points--;
@@ -64,12 +73,12 @@ function draw() {
     console.log("je bent uit het veld");
   }
 
-  if (x > innerWidth - 70){
+  if (x > xcanvas){
     points--;
     console.log("je bent uit het veld");
   }
 
-  if (y > innerHeight - 90){
+  if (y > ycanvas){
     points--;
     console.log("je bent uit het veld");
   }
@@ -97,35 +106,43 @@ function draw() {
   noStroke();
   ellipse(x,y,20,20);
   // Send the ball coordinates
-
-  if (keyIsDown(65)) {
-      x -= 3;
-      sendmouse(x,y,playerID);
-      tick = 0;
-      return false;
-  } else if (keyIsDown(68)) {
-      x += 3;
-      sendmouse(x,y,playerID);
-      tick = 0;
-      return false;
-  } else if (keyIsDown(87)) {
-      y -= 3;
-      sendmouse(x,y,playerID);
-      tick = 0;
-      return false;
-  } else if (keyIsDown(83)) {
-      y += 3;
-      sendmouse(x,y,playerID);
-      tick = 0;
-      return false;
+  if(x > 20) {
+    if (keyIsDown(65)) {
+        x -= speed;
+        sendmouse(x,y,playerID);
+        return false;
+    }
   }
-  last_xy = [x,y];
+
+  if(x < xcanvas - 20) {
+    if (keyIsDown(68)) {
+        x += speed;
+        sendmouse(x,y,playerID);
+        return false;
+    }
+  }
+
+  if(y > 20) {
+    if (keyIsDown(87)) {
+        y -= speed;
+        sendmouse(x,y,playerID);
+        return false;
+    }
+  }
+
+  if(y < ycanvas - 20) {
+    if (keyIsDown(83)) {
+        y += speed;
+        sendmouse(x,y,playerID);
+        return false;
+    }
+  }
 }
 
 // Function for sending to the socket
 function sendmouse(xpos, ypos, playerName) {
   // We are sending!
-  console.log("sendmouse: " + xpos + " " + ypos + " " + playerName);
+  console.log("push: " + xpos + " " + ypos + " " + playerName);
 
   // Make a little object with  and y
   var data = {
@@ -138,16 +155,14 @@ function sendmouse(xpos, ypos, playerName) {
   socket.emit('pos',data);
 }
 
-function Enemyobject(ex, ey, naam) {
+function Enemyobject(ex, ey, eplayerID) {
     this.xPos = ex;
     this.yPos = ey;
+    this.eID = eplayerID;
 
     this.teken = function() {
       fill(180, 20, 20);
       noStroke();
       ellipse(ex,ey,20,20);
     }
-    //this.checkfor(){
-
-    //}
 }
