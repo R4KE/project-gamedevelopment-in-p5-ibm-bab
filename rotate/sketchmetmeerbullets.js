@@ -3,7 +3,6 @@ var bullets = [];
 var bulletsshot = 0;
 var cooldown = 0;
 var cooldowntimer = 10;
-var variabele = 0;
 
 function setup() {
   createCanvas(innerWidth - 20, innerHeight - 20);
@@ -123,7 +122,7 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
     this.y += this.yspeed;
 
     if (this.x > innerWidth - 20) {
-      bullets.splice(bullets.indexOf(this), 1);
+      //code
     }
   }
 }
