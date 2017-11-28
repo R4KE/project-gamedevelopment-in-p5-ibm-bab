@@ -68,9 +68,17 @@ function player() {
     fill(219, 17, 17);
     rect(-16.5, 0.5, 10, 59)// left shadow
     rect(17.5, 0.5, 10, 59)// right shadow
-    noStroke();
-    fill(50);
-    ellipse(this.xbullet, this.ybullet, 10, 30);// draw bullet
+
+    //draw bullet
+/*
+    if(this.xbullet < innerWidth - 100 || this.xbullet > 100) {
+      noStroke();
+      fill(50);
+      ellipse(this.xbullet, this.ybullet, 10, 10);// draw bullet
+    }
+*/
+    //draw loop
+
     fill(219, 17, 17);
     stroke(20);
     rectMode(CORNER);
