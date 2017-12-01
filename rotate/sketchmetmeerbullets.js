@@ -12,8 +12,6 @@ function setup() {
 
 var Player = new player();
 
-//bullets.push(new Bullet(10, 10, 10, 3, 3));
-
 function draw() {
   background(255);
   for (i = 0; i < bulletsshot; i++) {
