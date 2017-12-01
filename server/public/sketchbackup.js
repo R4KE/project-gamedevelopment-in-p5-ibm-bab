@@ -2,7 +2,7 @@ var socket;
 var xcanvas = innerWidth - 20;
 var ycanvas = innerHeight - 20;
 var players = [];
-var speed = 6;
+var speed = 3;
 var x;
 var y;
 var dx;
