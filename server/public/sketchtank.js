@@ -23,6 +23,8 @@ var bulletsshot = 0;
 var cooldown = 0;
 var cooldowntimer = 10;
 var bulletspd = 5;
+var xbullet = 0;
+var ybullet = 0;
 
 function setup() {
   createCanvas(xcanvas, ycanvas);
@@ -165,7 +167,7 @@ function player() {
 
   this.eRender = function() {
     stroke(20);
-    fill(36, 104, 214);
+    fill(45, 155, 46);
     push();
     translate(ex,ey);
     rotate(edirection);
@@ -180,7 +182,7 @@ function player() {
     stroke(20);
     rectMode(CORNER);
     rect(-5, 0, 10, 40);
-    fill(36, 104, 214);
+    fill(45, 155, 46);
     ellipse(0, 0, 40, 40);
     pop();
   }
@@ -201,94 +203,27 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   }
 
   this.beweeg = function() {
+    //xbullet = this.x;
+    //ybullet = this.y;
     this.x += this.xspeed;
     this.y += this.yspeed;
   }
 }
 
-function sendmouse(xpos, ypos, direction, playerName) {
+function sendmouse(xpos, ypos, direction, playerName, xbullet, ybullet) {
   // We are sending!
-  console.log("push: " + Math.floor(xpos) + " " + Math.floor(ypos) + " " + Math.floor(direction) + " " + playerName);
+  console.log("push: " + Math.floor(xpos) + " " + Math.floor(ypos) + " " + Math.floor(direction) + " " + playerName + " " + xbullet + " " + ybullet);
 
   // Make a little object with  and y
   var data = {
     x: xpos,
     y: ypos,
     direction: direction,
-    playerID: playerName
+    playerID: playerName,
+    xbullet: xbullet,
+    ybullet: ybullet
   };
 
   // Send that object to the socket
   socket.emit('pos',data);
 }
-
-/*
-  fill(80, 80, 150);
-  noStroke();
-  ellipse(ex, ey, 20, 20);
-
-  fill(180, 20, 20);
-  noStroke();
-  ellipse(x,y,20,20);
-  // Send the ball coordinates
-  if(x > 20) {
-    if (keyIsDown(65)) {
-        x -= speed;
-        sendmouse(x,y,playerID);
-        return false;
-    }
-  }
-
-  if(x < xcanvas - 20) {
-    if (keyIsDown(68)) {
-        x += speed;
-        sendmouse(x,y,playerID);
-        return false;
-    }
-  }
-
-  if(y > 20) {
-    if (keyIsDown(87)) {
-        y -= speed;
-        sendmouse(x,y,playerID);
-        return false;
-    }
-  }
-
-  if(y < ycanvas - 20) {
-    if (keyIsDown(83)) {
-        y += speed;
-        sendmouse(x,y,playerID);
-        return false;
-    }
-  }
-}
-
-// Function for sending to the socket
-function sendmouse(xpos, ypos, playerName) {
-  // We are sending!
-  console.log("push: " + xpos + " " + ypos + " " + playerName);
-
-  // Make a little object with  and y
-  var data = {
-    x: xpos,
-    y: ypos,
-    playerID: playerName
-  };
-
-  // Send that object to the socket
-  socket.emit('pos',data);
-}
-
-function Enemyobject(ex, ey, eplayerID) {
-    this.xPos = ex;
-    this.yPos = ey;
-    this.eID = eplayerID;
-
-    this.teken = function() {
-      fill(180, 20, 20);
-      noStroke();
-      ellipse(ex,ey,20,20);
-    }
-}
-*/
