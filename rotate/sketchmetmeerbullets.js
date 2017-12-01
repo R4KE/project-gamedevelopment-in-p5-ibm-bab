@@ -111,10 +111,16 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   this.yspeed = _yspeed;
   this.shot = 0;
 
-  this.teken = function() {
-    noStroke();
-    fill(20);
-    ellipse(this.x, this.y, this.straal, this.straal);
+  if(this.x < innerWidth - 100) {
+    this.teken = function() {
+      noStroke();
+      fill(20);
+      ellipse(this.x, this.y, this.straal, this.straal);
+      console.log("true");
+    }
+  }
+  else{
+    //nothing
   }
 
   this.beweeg = function() {
