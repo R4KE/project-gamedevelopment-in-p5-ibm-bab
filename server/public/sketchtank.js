@@ -5,15 +5,13 @@ var players = [];
 var speed = 3;
 var x;
 var y;
-var dx;
-var dy;
 var ex;
 var ey;
 var points = 0;
 var aantalplayers = 0;
 var color;
 var playerID = "YOU";
-var eplayerID = "ENEMY";
+var ePlayerID = "ENEMY";
 var IDlength;
 var eIDlength;
 var direction = 0;
@@ -29,13 +27,9 @@ var ybullet = 0;
 function setup() {
   createCanvas(xcanvas, ycanvas);
   angleMode(RADIANS);
-  x = random(20, innerWidth - 70);
-  x = Math.floor(x);
-  y = random(20, innerHeight - 90);
-  y = Math.floor(y);
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
-  socket = io.connect('http://192.168.0.136:3000/');
+  socket = io.connect('http://localhost:3000/');
   // We make a named event called 'mouse' and write an
   // anonymous callback function
   socket.on('pos',
@@ -46,18 +40,10 @@ function setup() {
 
       ex = data.x;
       ey = data.y;
+      ePlayerID = data.playerID;
+      eIDlength = ePlayerID.length;
+      IDlength = playerID.length;
       edirection = data.direction;
-
-      dx = data.x - x;
-      dy = data.y - y;
-      if (sqrt(dx*dx + dy*dy) <= 20){
-        x = random(20, innerWidth - 70);
-        x = Math.floor(x);
-        y = random(20, innerHeight - 90);
-        y = Math.floor(y);
-        sendmouse(x,y,direction,playerID);
-        points++;
-      }
     }
   );
 }
@@ -68,6 +54,9 @@ var Player = new player();
 
 function draw() {
   background(255);
+
+  console.log("xbull: " + xbullet + ", ybull: " + ybullet)
+
   for (i = 0; i < bulletsshot; i++) {
     var bullet1 = bullets[i];
     bullet1.teken();
@@ -142,6 +131,10 @@ function player() {
   }
 
   this.render = function() {
+    textSize(16);
+    fill(250, 20, 20);
+    text(playerID, this.xPos - 20, this.yPos - 55);
+
     stroke(20);
     fill(250, 20, 20);
     push();
@@ -166,6 +159,11 @@ function player() {
   }
 
   this.eRender = function() {
+    noStroke();
+    textSize(16);
+    fill(45, 155, 46);
+    text(ePlayerID, ex - 25, ey - 60);
+
     stroke(20);
     fill(45, 155, 46);
     push();
@@ -174,11 +172,11 @@ function player() {
     rectMode(CENTER);
     rect(0, 0, 45, 60);
     noStroke();
-    fill(36, 84, 214);
+    fill(38, 132, 39);
     rect(-16.5, 0.5, 10, 59)// left shadow
     rect(17.5, 0.5, 10, 59)// right shadow
     noStroke();
-    fill(36, 84, 214);
+    fill(38, 132, 39);
     stroke(20);
     rectMode(CORNER);
     rect(-5, 0, 10, 40);
@@ -203,8 +201,8 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   }
 
   this.beweeg = function() {
-    //xbullet = this.x;
-    //ybullet = this.y;
+    xbullet = this.x;
+    ybullet = this.y;
     this.x += this.xspeed;
     this.y += this.yspeed;
   }
@@ -212,7 +210,7 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
 
 function sendmouse(xpos, ypos, direction, playerName, xbullet, ybullet) {
   // We are sending!
-  console.log("push: " + Math.floor(xpos) + " " + Math.floor(ypos) + " " + Math.floor(direction) + " " + playerName + " " + xbullet + " " + ybullet);
+  console.log("push: " + Math.floor(xpos) + " " + Math.floor(ypos) + "ddd " + Math.floor(direction) + " " + playerName + " " + xbullet + " " + ybullet);
 
   // Make a little object with  and y
   var data = {
