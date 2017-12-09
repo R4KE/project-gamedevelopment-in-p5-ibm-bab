@@ -1,4 +1,4 @@
-var socket, x, y, ex, ey, color, IDlength, eIDlength, edirection;
+var socket, x = 100, y = 100, ex, ey, color, IDlength, eIDlength, edirection, exbullet, eybullet;
 var xcanvas = innerWidth - 20;
 var ycanvas = innerHeight - 20;
 var players = [];
@@ -11,10 +11,11 @@ var direction = 0;
 var bullets = [];
 var bulletsshot = 0;
 var cooldown = 0;
-var cooldowntimer = 10;
+var cooldowntimer = 100;
 var bulletspd = 5;
-var xbullet = 0;
-var ybullet = 0;
+var xbullet = -10;
+var ybullet = -10;
+let score = 0;
 
 function setup() {
   createCanvas(xcanvas, ycanvas);
@@ -27,11 +28,13 @@ function setup() {
   socket.on('pos',
     // When we receive data
     function(data) {
-      console.log("pull: " + data.x + " " + data.y + " " + data.playerID);
+      console.log("pull: " + Math.floor(data.x) + " " + Math.floor(data.y) + " " + Math.floor(data.direction) + " " + data.playerID + " " + Math.floor(data.xbullet) + " " + Math.floor(data.ybullet));
       // Draw a blue circle
 
       ex = data.x;
       ey = data.y;
+      exbullet = data.xbullet;
+      eybullet = data.ybullet;
       ePlayerID = data.playerID;
       eIDlength = ePlayerID.length;
       IDlength = playerID.length;
@@ -42,12 +45,15 @@ function setup() {
 
 var Player = new player();
 
-//bullets.push(new Bullet(10, 10, 10, 3, 3));
-
 function draw() {
   background(255);
 
-  console.log("xbull: " + xbullet + ", ybull: " + ybullet)
+  sendmouse(x,y,direction,playerID,xbullet,ybullet);
+
+  //temporarily enemy bullet
+  noStroke();
+  fill(0);
+  ellipse(exbullet, eybullet, 10, 10);
 
   for (i = 0; i < bulletsshot; i++) {
     var bullet1 = bullets[i];
@@ -85,36 +91,32 @@ function player() {
         bullets.push(new Bullet(this.xPos, this.yPos, 10, Math.sin(this.direction) * - bulletspd, Math.cos(this.direction) * bulletspd));
         cooldown = 0;
       }
-      return false;
     } else {
       if (keyIsDown(65)) { //a
         this.direction -= 0.03;
         direction = this.direction;
-        sendmouse(x,y,direction,playerID);
       }
       if (keyIsDown(68)) { //d
         this.direction += 0.03;
         direction = this.direction;
-        sendmouse(x,y,direction,playerID);
       }
       if (keyIsDown(87)) { //w
         this.xSpeed -= Math.sin(this.direction);
         this.ySpeed += Math.cos(this.direction);
         x = this.xPos;
         y = this.yPos;
-        sendmouse(x,y,direction,playerID);
       }
       if (keyIsDown(83)) { //s
         this.xSpeed += Math.sin(this.direction);
         this.ySpeed -= Math.cos(this.direction);
         x = this.xPos;
         y = this.yPos;
-        sendmouse(x,y,direction,playerID);
       }
       if (keyIsDown(82)) { //r
         //code
       }//reload
     }
+
 
     this.xPos += this.xSpeed;
     this.yPos += this.ySpeed;
@@ -154,12 +156,12 @@ function player() {
     noStroke();
     textSize(16);
     fill(45, 155, 46);
-    text(ePlayerID, ex - 25, ey - 60);
+    text(ePlayerID, ex - 20, ey - 55);
 
     stroke(20);
     fill(45, 155, 46);
     push();
-    translate(ex,ey);
+    translate(ex, ey);
     rotate(edirection);
     rectMode(CENTER);
     rect(0, 0, 45, 60);
@@ -200,9 +202,9 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   }
 }
 
-function sendmouse(xpos, ypos, direction, playerName, xbullet, ybullet) {
+function sendmouse(xpos, ypos, direction, playerName, xBullet, yBullet) {
   // We are sending!
-  console.log("push: " + Math.floor(xpos) + " " + Math.floor(ypos) + "ddd " + Math.floor(direction) + " " + playerName + " " + xbullet + " " + ybullet);
+  console.log("push: " + Math.floor(xpos) + " " + Math.floor(ypos) + " " + Math.floor(direction) + " " + playerName + " " + Math.floor(xBullet) + " " + Math.floor(yBullet));
 
   // Make a little object with  and y
   var data = {
@@ -210,8 +212,8 @@ function sendmouse(xpos, ypos, direction, playerName, xbullet, ybullet) {
     y: ypos,
     direction: direction,
     playerID: playerName,
-    xbullet: xbullet,
-    ybullet: ybullet
+    xbullet: xBullet,
+    ybullet: yBullet
   };
 
   // Send that object to the socket
