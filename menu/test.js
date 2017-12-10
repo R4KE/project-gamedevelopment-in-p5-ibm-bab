@@ -10,95 +10,129 @@ let textsize = innerWidth / 18;
 var ID;
 var playerID;
 let stage = 0;
+let i = 0;
+let ringsize = 50;
+let ringvalue = 0;
 
 
 function setup() {
   createCanvas(innerWidth - 20, innerHeight - 20);
-
   //nothing
 }
 
 function draw() {
   background(255);
 
+  if (online < 2) {
+    waiting();
+  } if (online == 2) {
+    fadein2 = 255;
+    nickname();
+  } if (stage == 2) {
+    fadein1 = 255;
+    pressstart();
+  }
+
+}
+
+//waiting menu
+function waiting() {
   noStroke();
   fill(51, 51, 51, fadeout2);
   textSize(textsize);
-  text("Wating for another player...", innerWidth / 7, innerHeight / 2);
+  text("Waiting for another player...", innerWidth / 7, innerHeight / 2);
+}
 
-  if (online == 2) {
-      fadeout2 = fadeout2 - 10;
-    if (fadein2 < 255) {
-      fadein2 = fadein2 + 5;
-    }
+//choose your nickname
+function nickname() {
+  background(255);
 
-    fill(51, 51, 51, fadein2);
-    textSize(textsize);
-    text("Choose your Nickname", innerWidth / 5, innerHeight / 4.4);
-
-    fill(51, 51, 51, fadein2);
-    textSize(textsize);
-    text("Click anywhere", innerWidth / 3.3, innerHeight / 1.3);
-
-    //circles
-    noFill();
-    strokeWeight(3);
-    stroke(51, 51, 51, fadein2);
-    ellipse(innerWidth / 2, innerHeight / 2, 50, 50);
-
-    noFill();
-    strokeWeight(3);
-    stroke(51, 51, 51, fadein2);
-    ellipse(innerWidth / 2, innerHeight / 2, 100, 100);
-
-    noFill();
-    strokeWeight(3);
-    stroke(51, 51, 51, fadein2);
-    ellipse(innerWidth / 2, innerHeight / 2, 150, 150);
+  if (ringvalue == 0) {
+    ringsize = ringsize + 0.2;
+  } if (ringsize > 60 || ringsize == 60) {
+    ringvalue = 1;
+  } if (ringvalue == 1) {
+    ringsize = ringsize - 0.2;
+  } if (ringsize < 50 || ringsize == 50) {
+    ringvalue = 0;
   }
 
+  fill(51, 51, 51, fadein2);
+  textSize(textsize);
+  text("Choose your Nickname", innerWidth / 5, innerHeight / 4.4);
+
+  fill(51, 51, 51, fadein2);
+  textSize(textsize);
+  text("Click anywhere", innerWidth / 3.3, innerHeight / 1.3);
+
+  //circles
+  noFill();
+  strokeWeight(3);
+  stroke(51, 51, 51, fadein2);
+  ellipse(innerWidth / 2, innerHeight / 2, ringsize, ringsize);
+
+  noFill();
+  strokeWeight(3);
+  stroke(51, 51, 51, fadein2);
+  ellipse(innerWidth / 2, innerHeight / 2, ringsize * 2, ringsize * 2);
+
+  noFill();
+  strokeWeight(3);
+  stroke(51, 51, 51, fadein2);
+  ellipse(innerWidth / 2, innerHeight / 2, ringsize * 3, ringsize * 3);
+
+  noStroke();
+
   if (stage == 2) {
-    fadein2 = fadein2 - 10;
-    fadein1 = fadein1 + 5;
-
-    // text ""
-    fill(51, 51, 51, fadein1);
-    textSize(50);
-    text("Press any button to start.", innerWidth / 8, ytext);
-
-    // press checker
-    strokeWeight(3);
-    stroke(51, 51, 51, fadein1);
-    fill(255);
-    ellipse(innerWidth / 2 - 20, ychecker, 100, 100);
-    noStroke();
-    fill(51, 51, 51, fadein1);
-    ellipse(innerWidth / 2 - 20, ychecker, size, size);
-
-    if (size < 97) {
-      if (keyIsPressed === true) {
-        size = size + 1.5;
-        return false;
-      } else if (size > 10) {
-        size = size - 0.5
-      }
-    } else {
-      ychecker = ychecker + 5;
-      ytext = ytext - 2.7;
-    }
-  } else if (online < 2) {
-    fadeout2 = 255;
     fadein2 = 0;
+  }
 
-    fill(51, 51, 51, fadeout2);
-    textSize(textsize);
-    text("Wating for another player...", innerWidth / 7, innerHeight / 2);
+  if (mouseIsPressed) {
+    input();
+    return false;
+  }
+}
+
+//press to start the game
+function pressstart() {
+  background(255);
+
+  fill(51, 51, 51, fadein1);
+  textSize(50);
+  text("Press any button to start.", innerWidth / 8, ytext);
+
+  // press checker
+  strokeWeight(3);
+  stroke(51, 51, 51, fadein1);
+  fill(255);
+  ellipse(innerWidth / 2 - 20, ychecker, 100, 100);
+  noStroke();
+  fill(51, 51, 51, fadein1);
+  ellipse(innerWidth / 2 - 20, ychecker, size, size);
+
+  if (size < 97) {
+    if (keyIsPressed === true) {
+      size = size + 1.5;
+      return false;
+    } else if (size > 10) {
+      size = size - 0.5
+    }
+  } else {
+    ychecker = ychecker + 5;
+    ytext = ytext - 2.7;
+
   }
 }
 
 function input() {
-  ID = prompt("Choose a nickname: ", "Nickname");
-  if (ID != null) {
-    	playerID = ID;
+  if (i < 1) {
+    ID = prompt("Choose a nickname: ", "Nickname");
+    if (ID != null) {
+      	playerID = ID;
+        stage = 2; 
+    } else {
+      alert("You need to have a name!");
+    }
   }
+  i++;
 }
