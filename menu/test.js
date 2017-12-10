@@ -99,7 +99,7 @@ function pressstart() {
 
   fill(51, 51, 51, fadein1);
   textSize(50);
-  text("Press any button to start.", innerWidth / 8, ytext);
+  text("Hold any key to start.", innerWidth / 8, ytext);
 
   // press checker
   strokeWeight(3);
@@ -129,7 +129,7 @@ function input() {
     ID = prompt("Choose a nickname: ", "Nickname");
     if (ID != null) {
       	playerID = ID;
-        stage = 2; 
+        stage = 2;
     } else {
       alert("You need to have a name!");
     }
