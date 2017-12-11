@@ -1,24 +1,38 @@
+var xSize = window.innerWidth - 20;
+var ySize = window.innerHeight - 20;
 let direction = 0;
 var bullets = [];
 var bulletsshot = 0;
 var cooldown = 0;
 var cooldowntimer = 10;
+player = new player;
+muren = [];
 
-function setup() {
-  createCanvas(innerWidth - 20, innerHeight - 20);
-  angleMode(RADIANS);
+function setup(){
+  background(255);
+  createCanvas(xSize, ySize);
+  for (var i = 0; i < 20; i++) {
+    wallkleur = random(0, 45)
+    xPos = random(0, xSize)
+    yPos = random(0, ySize)
+    wallWidth = random(30, 110)
+    wallHeight = random(40, 120)
+    wall = new Wall(xPos, yPos, wallHeight, wallWidth);
+    muren.push(wall);
+  }
 }
-
-
-var Player = new player();
 
 function draw() {
   background(255);
-
+  for (i = 0; i < bulletsshot; i++) {
+    var bullet1 = bullets[i];
+    bullet1.teken();
+    bullet1.beweeg();
+  }
   fill(0, 255, 0);
   noStroke();
-  Player.controls();
-  Player.render();
+  player.controls();
+  player.render();
 
   for (i = 0; i < bulletsshot; i++) {
     var bullet1 = bullets[i];
@@ -27,6 +41,38 @@ function draw() {
   }
 
   cooldown += 1;
+
+  for (var i = 0; i < 20; i++) {
+    wall1 = muren[i];
+    wall1.teken();
+    wall1.colide();
+  }
+}
+
+function Wall(xPos, yPos, wallWidth, WallHeigt) {
+  this.xPos = xPos;
+  this.yPos = yPos;
+  this.wallWidth = wallWidth;
+  this.wallHeight = wallHeight;
+
+  this.teken = function() {
+    fill(wallkleur);
+    noStroke();
+    rect(xPos, yPos, wallWidth, wallHeight);
+  }
+
+  this.colide = function() {
+    px = player.xPos;
+    py = player.yPos;
+    if (px < this.xPos + this.wallWidth &&
+        px + 45 > this.xPos &&
+        py < this.yPos + this.wallHeight &&
+        60 + py > this.yPos) {
+      console.log("colide wall");
+      player.xPos += (player.xPos - (this.xPos + (wallWidth / 2))) / 10;
+      player.yPos += (player.yPos - (this.yPos + (wallHeight / 2))) / 10;
+    }
+  }
 }
 
 function player() {
@@ -97,7 +143,6 @@ function player() {
   }
 }
 
-
 function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   this.x = _x;
   this.y = _y;
@@ -106,24 +151,23 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   this.yspeed = _yspeed;
   this.shot = 0;
 
-  this.teken = function() {
-      if(this.x < 0 || this.x > innerWidth || this.y < 0 || this.x > innerHeight) {
-          this.x = 20;
-          this.y = 20;
-          this.xspeed = 0;
-          this.yspeed = 0;
-      }
-
+  if(this.x < innerWidth - 100) {
+    this.teken = function() {
       noStroke();
       fill(20);
       ellipse(this.x, this.y, this.straal, this.straal);
+    }
   }
-
+  else{
+    //nothing
+  }
 
   this.beweeg = function() {
     this.x += this.xspeed;
     this.y += this.yspeed;
+
+    if (this.x > innerWidth - 20) {
+      //code
+    }
   }
 }
-
-// credits naar thijs voor wat game logics

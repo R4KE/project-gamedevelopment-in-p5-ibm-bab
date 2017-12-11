@@ -48,7 +48,7 @@ function Wall(xpos, ypos, wallWidth, WallHeigt) {
         px + pl.radius > this.xpos &&
         py < this.ypos + this.wallHeight &&
         pl.radius + py > this.ypos) {
-      console.log("dipp");
+      console.log("colide wall");
       pl.xpos += (pl.xpos - (this.xpos + (wallWidth / 2))) / 10;
       pl.ypos += (pl.ypos - (this.ypos + (wallHeight / 2))) / 10;
     }
@@ -69,10 +69,7 @@ function Player() {
   }
 
   this.move = function() {
-      if (keyIsDown(32)){
-        console.log("test");
-      }
-      else if (keyIsDown(87)){
+      if (keyIsDown(87)){
         this.ypos -= this.speed;
       }
       else if (keyIsDown(83)){
