@@ -16,11 +16,7 @@ var Player = new player();
 
 function draw() {
   background(255);
-  for (i = 0; i < bulletsshot; i++) {
-    var bullet1 = bullets[i];
-    bullet1.teken();
-    bullet1.beweeg();
-  }
+
   fill(0, 255, 0);
   noStroke();
   Player.controls();
@@ -103,6 +99,7 @@ function player() {
   }
 }
 
+
 function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   this.x = _x;
   this.y = _y;
@@ -111,25 +108,23 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   this.yspeed = _yspeed;
   this.shot = 0;
 
-  if(this.x < innerWidth - 100) {
-    this.teken = function() {
+  this.teken = function() {
+      if(this.x < 0 || this.x > innerWidth || this.y < 0 || this.x > innerHeight) {
+          this.x = 20;
+          this.y = 20;
+          this.xspeed = 0;
+          this.yspeed = 0;
+      }
+
       noStroke();
       fill(20);
       ellipse(this.x, this.y, this.straal, this.straal);
-      console.log("true");
-    }
   }
-  else{
-    //nothing
-  }
+
 
   this.beweeg = function() {
     this.x += this.xspeed;
     this.y += this.yspeed;
-
-    if (this.x > innerWidth - 20) {
-      //code
-    }
   }
 }
 
