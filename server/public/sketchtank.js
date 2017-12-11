@@ -1,4 +1,6 @@
 var socket, x = 100, y = 100, ex, ey, color, IDlength, eIDlength, edirection, exbullet, eybullet;
+let cx;
+let cy;
 var xcanvas = innerWidth - 20;
 var ycanvas = innerHeight - 20;
 var players = [];
@@ -16,6 +18,9 @@ var bulletspd = 5;
 var xbullet = -10;
 var ybullet = -10;
 let score = 0;
+var dx;
+var dy;
+let botsing = 0;
 
 function setup() {
   createCanvas(xcanvas, ycanvas);
@@ -48,6 +53,14 @@ var Player = new player();
 function draw() {
   background(255);
 
+  dx = x - exbullet;
+  dy = y - eybullet;
+
+  if (sqrt(dx*dx + dy*dy) <= 40 + 10){
+    console.log("botsing");
+    botsing = 1;
+  }
+
   sendmouse(x,y,direction,playerID,xbullet,ybullet);
 
   //temporarily enemy bullet
@@ -64,7 +77,9 @@ function draw() {
   noStroke();
   Player.controls();
   Player.render();
-  Player.eRender();
+  if (botsing == 0) {
+    Player.eRender();
+  }
 
   for (i = 0; i < bulletsshot; i++) {
     var bullet1 = bullets[i];
