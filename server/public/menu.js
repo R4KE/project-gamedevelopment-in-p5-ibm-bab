@@ -10,17 +10,12 @@ let textsize = innerWidth / 18;
 var ID;
 var playerID;
 let stage = 0;
-let i = 0;
+let _i = 0;
 let ringsize = 50;
 let ringvalue = 0;
+let click = 0;
 
-
-function setup() {
-  createCanvas(innerWidth - 20, innerHeight - 20);
-  //nothing
-}
-
-function draw() {
+function menu() {
   background(255);
 
   if (online < 2) {
@@ -32,7 +27,6 @@ function draw() {
     fadein1 = 255;
     pressstart();
   }
-
 }
 
 //waiting menu
@@ -46,6 +40,8 @@ function waiting() {
 //choose your nickname
 function nickname() {
   background(255);
+
+  click = 1;
 
   if (ringvalue == 0) {
     ringsize = ringsize + 0.2;
@@ -63,7 +59,7 @@ function nickname() {
 
   fill(51, 51, 51, fadein2);
   textSize(textsize);
-  text("Click anywhere", innerWidth / 3.3, innerHeight / 1.3);
+  text("By clicking anywhere", innerWidth / 4.1, innerHeight / 1.3);
 
   //circles
   noFill();
@@ -82,15 +78,20 @@ function nickname() {
   ellipse(innerWidth / 2, innerHeight / 2, ringsize * 3, ringsize * 3);
 
   noStroke();
+  strokeWeight(0);
 
   if (stage == 2) {
     fadein2 = 0;
   }
 
-  if (mouseIsPressed) {
-    input();
-    return false;
+  if (click == 1) {
+    if (mouseIsPressed) {
+      input();
+      return false;
+    }
   }
+
+  click = 0;
 }
 
 //press to start the game
@@ -99,7 +100,7 @@ function pressstart() {
 
   fill(51, 51, 51, fadein1);
   textSize(50);
-  text("Hold any key to start.", innerWidth / 8, ytext);
+  text("Hold any key to start.", innerWidth / 5, ytext);
 
   // press checker
   strokeWeight(3);
@@ -118,21 +119,21 @@ function pressstart() {
       size = size - 0.5
     }
   } else {
-    ychecker = ychecker + 5;
-    ytext = ytext - 2.7;
-
+    ychecker = ychecker + 15;
+    ytext = ytext - 7;
+    game();
   }
 }
 
 function input() {
-  if (i < 1) {
+  if (_i < 1) {
     ID = prompt("Choose a nickname: ", "Nickname");
     if (ID != null) {
       	playerID = ID;
         stage = 2;
+        _i = 1;
     } else {
       alert("You need to have a name!");
     }
   }
-  i++;
 }

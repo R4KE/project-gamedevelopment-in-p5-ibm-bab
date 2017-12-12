@@ -21,6 +21,7 @@ let score = 0;
 var dx;
 var dy;
 let botsing = 0;
+var value = false;
 
 function setup() {
   createCanvas(xcanvas, ycanvas);
@@ -53,6 +54,10 @@ var Player = new player();
 function draw() {
   background(255);
 
+  menu();
+}
+
+function game() {
   dx = x - exbullet;
   dy = y - eybullet;
 
@@ -89,7 +94,6 @@ function draw() {
 
   cooldown += 1;
 }
-
 function player() {
   this.xPos = 100;
   this.yPos = 100;
@@ -145,6 +149,7 @@ function player() {
     text(playerID, this.xPos - 20, this.yPos - 55);
 
     stroke(20);
+    strokeWeight(1);
     fill(250, 20, 20);
     push();
     translate(this.xPos,this.yPos);
@@ -174,6 +179,7 @@ function player() {
     text(ePlayerID, ex - 20, ey - 55);
 
     stroke(20);
+    strokeWeight(1);
     fill(45, 155, 46);
     push();
     translate(ex, ey);
