@@ -1,8 +1,8 @@
 var socket, x = 100, y = 100, ex, ey, color, IDlength, eIDlength, edirection, exbullet, eybullet;
 let cx;
 let cy;
-var xcanvas = innerWidth - 20;
 var ycanvas = innerHeight - 20;
+var xcanvas = innerWidth - 20;
 var players = [];
 var speed = 3;
 var points = 0;
@@ -35,15 +35,12 @@ function setup() {
     // When we receive data
     function(data) {
       console.log("pull: " + Math.floor(data.x) + " " + Math.floor(data.y) + " " + Math.floor(data.direction) + " " + data.playerID + " " + Math.floor(data.xbullet) + " " + Math.floor(data.ybullet));
-      // Draw a blue circle
 
       ex = data.x;
       ey = data.y;
       exbullet = data.xbullet;
       eybullet = data.ybullet;
       ePlayerID = data.playerID;
-      eIDlength = ePlayerID.length;
-      IDlength = playerID.length;
       edirection = data.direction;
     }
   );
@@ -60,6 +57,7 @@ function draw() {
 function game() {
   dx = x - exbullet;
   dy = y - eybullet;
+
 
   if (sqrt(dx*dx + dy*dy) <= 40 + 10){
     console.log("botsing");
@@ -103,38 +101,37 @@ function player() {
 
 
   this.controls = function() {
-    if (keyIsDown(32)) { //"space"
-      if (cooldown > cooldowntimer){
+    if (cooldown > cooldowntimer){
+      if (keyIsDown(32)) { //"space"
         bulletsshot += 1;
         console.log("new bullet");
         bullets.push(new Bullet(this.xPos, this.yPos, 10, Math.sin(this.direction) * - bulletspd, Math.cos(this.direction) * bulletspd));
         cooldown = 0;
       }
-    } else {
-      if (keyIsDown(65)) { //a
-        this.direction -= 0.03;
-        direction = this.direction;
-      }
-      if (keyIsDown(68)) { //d
-        this.direction += 0.03;
-        direction = this.direction;
-      }
-      if (keyIsDown(87)) { //w
-        this.xSpeed -= Math.sin(this.direction);
-        this.ySpeed += Math.cos(this.direction);
-        x = this.xPos;
-        y = this.yPos;
-      }
-      if (keyIsDown(83)) { //s
-        this.xSpeed += Math.sin(this.direction);
-        this.ySpeed -= Math.cos(this.direction);
-        x = this.xPos;
-        y = this.yPos;
-      }
-      if (keyIsDown(82)) { //r
-        //code
-      }//reload
     }
+    if (keyIsDown(65)) { //a
+      this.direction -= 0.03;
+      direction = this.direction;
+    }
+    if (keyIsDown(68)) { //d
+      this.direction += 0.03;
+      direction = this.direction;
+    }
+    if (keyIsDown(87)) { //w
+      this.xSpeed -= Math.sin(this.direction);
+      this.ySpeed += Math.cos(this.direction);
+      x = this.xPos;
+      y = this.yPos;
+    }
+    if (keyIsDown(83)) { //s
+      this.xSpeed += Math.sin(this.direction);
+      this.ySpeed -= Math.cos(this.direction);
+      x = this.xPos;
+      y = this.yPos;
+    }
+    if (keyIsDown(82)) { //r
+      //code
+    }//reload
 
 
     this.xPos += this.xSpeed;
@@ -236,7 +233,4 @@ function sendmouse(xpos, ypos, direction, playerName, xBullet, yBullet) {
     xbullet: xBullet,
     ybullet: yBullet
   };
-
-  // Send that object to the socket
-  socket.emit('pos',data);
 }

@@ -19,7 +19,10 @@ function menu() {
   background(255);
 
   if (online < 2) {
-    waiting();
+    //waiting();
+    admin();
+  } if (online > 2) {
+    tomuch();
   } if (online == 2) {
     fadein2 = 255;
     nickname();
@@ -27,6 +30,20 @@ function menu() {
     fadein1 = 255;
     pressstart();
   }
+}
+
+function admin() {
+  noStroke();
+  fill(51, 51, 51, fadeout2);
+  textSize(textsize);
+  text("Wait for an admin to come..", innerWidth / 7, innerHeight / 2);
+}
+
+function tomuch() {
+  noStroke();
+  fill(51, 51, 51, fadeout2);
+  textSize(textsize);
+  text("There are to many players...", innerWidth / 7, innerHeight / 2);
 }
 
 //waiting menu

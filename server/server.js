@@ -5,7 +5,7 @@
 var express = require('express');
 // Create the app
 var app = express();
-var online = 0;
+var _online = 0;
 
 // Set up the server
 // process.env.PORT is related to deploying on heroku
@@ -31,22 +31,21 @@ io.sockets.on('connection',
   function (socket) {
 
     console.log("We have a new client: " + socket.id);
-    online = online + 1;
+    _online = _online + 1;
     // When this user emits, client side: socket.emit('otherevent',some data);
     socket.on('pos',
       function(data) {
         // Data comes in as whatever was sent, including objects
-        console.log("Received: 'pos' " + data.x + " " + data.y + " " + data.playerID + " " + data.direction + " " + data.xbullet + " " + data.ybullet);
+        console.log("Received: 'pos' " + data.x + " " + data.y + " " + data.playerID + " " + data.direction + " " + data.xbullet + " " + data.ybullet + " " + _online);
 
         // Send it to all other clients
         socket.broadcast.emit('pos', data);
-
       }
     );
 
     socket.on('disconnect', function() {
       console.log("Client has disconnected");
-      online = online - 1;
+      _online = _online - 1;
     });
   }
 );
