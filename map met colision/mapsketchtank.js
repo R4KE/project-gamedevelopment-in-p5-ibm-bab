@@ -11,12 +11,12 @@ muren = [];
 function setup(){
   background(255);
   createCanvas(xSize, ySize);
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 15; i++) {
     wallkleur = random(0, 45)
     xPos = random(0, xSize)
     yPos = random(0, ySize)
-    wallWidth = random(30, 110)
-    wallHeight = random(40, 120)
+    wallWidth = 80;
+    wallHeight = 80;
     wall = new Wall(xPos, yPos, wallHeight, wallWidth);
     muren.push(wall);
   }
@@ -42,14 +42,14 @@ function draw() {
 
   cooldown += 1;
 
-  for (var i = 0; i < 20; i++) {
+  for (var i = 0; i < 15; i++) {
     wall1 = muren[i];
     wall1.teken();
     wall1.colide();
   }
 }
 
-function Wall(xPos, yPos, wallWidth, WallHeigt) {
+function Wall(xPos, yPos, wallWidth, WallHeight) {
   this.xPos = xPos;
   this.yPos = yPos;
   this.wallWidth = wallWidth;
@@ -69,8 +69,9 @@ function Wall(xPos, yPos, wallWidth, WallHeigt) {
         py < this.yPos + this.wallHeight &&
         60 + py > this.yPos) {
       console.log("colide wall");
-      player.xPos += (player.xPos - (this.xPos + (wallWidth / 2))) / 10;
-      player.yPos += (player.yPos - (this.yPos + (wallHeight / 2))) / 10;
+
+      //player.xPos += (player.xPos - (this.xPos + (wallWidth * 10))) / 10;
+      //player.yPos += (player.yPos - (this.yPos + (wallHeight * 10))) / 10;
     }
   }
 }
