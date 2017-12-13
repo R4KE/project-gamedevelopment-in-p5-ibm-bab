@@ -20,10 +20,6 @@ function listen() {
 
 app.use(express.static('public'));
 
-function Setup() {
-
-}
-
 // WebSocket Portion
 // WebSockets work with the HTTP server
 var io = require('socket.io')(server);
