@@ -36,7 +36,7 @@ io.sockets.on('connection',
     socket.on('pos',
       function(data) {
         // Data comes in as whatever was sent, including objects
-        console.log("Received: pos " + data.x + " " + data.y + " " + data.playerID + " " + data.direction + " " + data.xbullet + " " + data.ybullet);
+        console.log("Received: pos " + data.x + " " + data.y + " " + data.playerID + " " + data.direction + " " + data.xbullet + " " + data.ybullet + " " + data.score);
 
         // Send it to all other clients
         socket.broadcast.emit('pos', data);

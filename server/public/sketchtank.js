@@ -1,11 +1,10 @@
-var socket, x, y, ex, ey, color, IDlength, eIDlength, edirection, exbullet, eybullet;
+var socket, x, y, ex = 100, ey = 100, color, IDlength, eIDlength, edirection, exbullet, eybullet;
 let cx;
 let cy;
 var ycanvas = innerHeight - 20;
 var xcanvas = innerWidth - 20;
 var players = [];
 var speed = 3;
-var points = 0;
 var aantalplayers = 0;
 var playerID = "YOU";
 var ePlayerID = "ENEMY";
@@ -19,16 +18,16 @@ var xbullet = -10;
 var ybullet = -10;
 var dx;
 var dy;
-let score = 0;
-let eScore = 0;
+var score = 0;
+var eScore = 0;
 var value = false;
 
 function setup() {
   createCanvas(xcanvas, ycanvas);
   angleMode(RADIANS);
 
-   x = random(0, innerWidth - 20);
-   y = random(0, innerHeight - 20);
+   x = 100;
+   y = 100;
 
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
@@ -38,7 +37,7 @@ function setup() {
   socket.on('pos',
     // When we receive data
     function(data) {
-      console.log("pull: " + Math.floor(data.x) + " " + Math.floor(data.y) + " " + Math.floor(data.direction) + " " + data.playerID + " " + Math.floor(data.xbullet) + " " + Math.floor(data.ybullet));
+      //console.log("pull: " + Math.floor(data.x) + " " + Math.floor(data.y) + " " + Math.floor(data.direction) + " " + data.playerID + " " + Math.floor(data.xbullet) + " " + Math.floor(data.ybullet) + " " + data.score);
 
       ex = data.x;
       ey = data.y;
@@ -46,6 +45,7 @@ function setup() {
       eybullet = data.ybullet;
       ePlayerID = data.playerID;
       edirection = data.direction;
+      eScore = data.score
     }
   );
 }
@@ -59,9 +59,20 @@ function draw() {
 }
 
 function scoreboard() {
+  points = score / 10;
+  ePoints = eScore / 10;
   fill(51);
   textSize(textsize * 1.5);
-  text(score / 10, 100, 100);
+  text(points + " | " + ePoints, 100, 100);
+  if (points > 9.9) {
+    fill(51);
+    textSize(textsize * 3);
+    text("YOU WON!", innerWidth / 20, innerHeight / 2);
+  } if (ePoints > 9.9) {
+      fill(51);
+      textSize(textsize * 2);
+      text("ENEMY WON!", innerWidth / 10, innerHeight / 2);
+    }
 }
 
 function game() {
@@ -75,7 +86,7 @@ function game() {
     score++;
   }
 
-  sendmouse(x,y,direction,playerID,xbullet,ybullet);
+  sendmouse(x,y,direction,playerID,xbullet,ybullet,score);
 
   //temporarily enemy bullet
   noStroke();
@@ -89,6 +100,7 @@ function game() {
   }
   fill(0, 255, 0);
   noStroke();
+  Player.map();
   Player.controls();
   Player.render();
   Player.eRender();
@@ -108,6 +120,23 @@ function player() {
   this.ySpeed = 0;
   this.direction = 0;
 
+  this.map = function() {
+    fill(51);
+    //nr.1
+    rect(200, 150, 100, 100);
+    fill(51);
+    //nr.1 + 100, 200
+    rect(300, 400, 100, 100);
+    fill(51);
+    //nr.2 + 50 - 350
+    rect(350, 50, 100, 100);
+    fill(51);
+    //nr.3 + 100 + 400
+    rect(450, 450, 100, 100);
+    fill(51);
+    //nr.4 + 150 - 450
+    rect(600, 0, 100, 100);
+  }
 
   this.controls = function() {
     if (cooldown > cooldowntimer){
@@ -127,10 +156,20 @@ function player() {
       direction = this.direction;
     }
     if (keyIsDown(87)) { //w
-      this.xSpeed -= Math.sin(this.direction);
-      this.ySpeed += Math.cos(this.direction);
-      x = this.xPos;
-      y = this.yPos;
+      if (x < 170 || x > 333 || y < 120 || y > 285) {
+        if (x < 270 || x > 433 || y < 370 || y > 535) {
+          if (x < 320 || x > 483 || y < 20 || y > 185) {
+            if (x < 420 || x > 583 || y < 420 || y > 585) {
+              if (x < 570 || x > 633 || y < -20 || y > 145) {
+                this.xSpeed -= Math.sin(this.direction);
+                this.ySpeed += Math.cos(this.direction);
+                x = this.xPos;
+                y = this.yPos;
+              }
+            }
+          }
+        }
+      }
     }
     if (keyIsDown(83)) { //s
       this.xSpeed += Math.sin(this.direction);
@@ -161,7 +200,7 @@ function player() {
     translate(this.xPos,this.yPos);
     rotate(this.direction);
     rectMode(CENTER);
-    rect(0, 0, 45, 60);
+    rect(0, 0, 50, 55);
     noStroke();
     fill(219, 17, 17);
     rect(-16.5, 0.5, 10, 59)// left shadow
@@ -191,7 +230,7 @@ function player() {
     translate(ex, ey);
     rotate(edirection);
     rectMode(CENTER);
-    rect(0, 0, 45, 60);
+    rect(0, 0, 50, 55);
     noStroke();
     fill(38, 132, 39);
     rect(-16.5, 0.5, 10, 59)// left shadow
@@ -222,16 +261,56 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   }
 
   this.beweeg = function() {
-    xbullet = this.x;
-    ybullet = this.y;
-    this.x += this.xspeed;
-    this.y += this.yspeed;
+    if (this.x < 200 || this.x > 300 || this.y < 150 || this.y > 250) {
+      if (this.x < 300 || this.x > 400 || this.y < 400 || this.y > 500) {
+        if (this.x < 350 || this.x > 450 || this.y < 50 || this.y > 150) {
+          if (this.x < 450 || this.x > 550 || this.y < 450 || this.y > 550) {
+            if (this.x < 600 || this.x > 700 || this.y < 0 || this.y > 100) {
+              xbullet = this.x;
+              ybullet = this.y;
+              this.x += this.xspeed;
+              this.y += this.yspeed;
+            } else {
+              this.x = -10;
+              this.y = -10;
+              this.xspeed = 0;
+              this.yspeed = 0;
+              console.log("collision");
+            }
+          } else {
+            this.x = -10;
+            this.y = -10;
+            this.xspeed = 0;
+            this.yspeed = 0;
+            console.log("collision");
+          }
+        } else {
+          this.x = -10;
+          this.y = -10;
+          this.xspeed = 0;
+          this.yspeed = 0;
+          console.log("collision");
+        }
+      } else {
+        this.x = -10;
+        this.y = -10;
+        this.xspeed = 0;
+        this.yspeed = 0;
+        console.log("collision");
+      }
+    } else {
+      this.x = -10;
+      this.y = -10;
+      this.xspeed = 0;
+      this.yspeed = 0;
+      console.log("collision");
+    }
   }
 }
 
-function sendmouse(xpos, ypos, direction, playerName, xBullet, yBullet) {
+function sendmouse(xpos, ypos, direction, playerName, xBullet, yBullet, points) {
   // We are sending!
-  console.log("push: " + Math.floor(xpos) + " " + Math.floor(ypos) + " " + Math.floor(direction) + " " + playerName + " " + Math.floor(xBullet) + " " + Math.floor(yBullet));
+  //console.log("push: " + Math.floor(xpos) + " " + Math.floor(ypos) + " " + Math.floor(direction) + " " + playerName + " " + Math.floor(xBullet) + " " + Math.floor(yBullet) + " " + points);
 
   // Make a little object with  and y
   var data = {
@@ -240,7 +319,8 @@ function sendmouse(xpos, ypos, direction, playerName, xBullet, yBullet) {
     direction: direction,
     playerID: playerName,
     xbullet: xBullet,
-    ybullet: yBullet
+    ybullet: yBullet,
+    score: points
   };
 
   // Send that object to the socket
