@@ -5,6 +5,8 @@ var bullets = [];
 var bulletsshot = 0;
 var cooldown = 0;
 var cooldowntimer = 10;
+var px;
+var py;
 player = new player;
 muren = [];
 
@@ -16,8 +18,8 @@ function setup(){
     xPos = random(0, xSize)
     yPos = random(0, ySize)
     wallWidth = 80;
-    wallHeight = 80;
-    wall = new Wall(xPos, yPos, wallHeight, wallWidth);
+    wallHeight = 40;
+    wall = new Wall(xPos, yPos, wallWidth, wallHeight);
     muren.push(wall);
   }
 }
@@ -64,12 +66,11 @@ function Wall(xPos, yPos, wallWidth, WallHeight) {
   this.colide = function() {
     px = player.xPos;
     py = player.yPos;
-    if (px < this.xPos + this.wallWidth &&
-        px + 45 > this.xPos &&
-        py < this.yPos + this.wallHeight &&
-        60 + py > this.yPos) {
+    if (px < this.xPos + this.wallWidth + 33 &&
+        px + 33 > this.xPos &&
+        py < this.yPos + this.wallHeight + 33  &&
+        py + 33 > this.yPos) {
       console.log("colide wall");
-
       //player.xPos += (player.xPos - (this.xPos + (wallWidth * 10))) / 10;
       //player.yPos += (player.yPos - (this.yPos + (wallHeight * 10))) / 10;
     }
@@ -94,24 +95,21 @@ function player() {
       }
       return false;
     } else {
-      if (keyIsDown(65)) { //a
-        this.direction -= 0.03;
-      }
-      if (keyIsDown(68)) { //d
-        this.direction += 0.03;
-      }
-      if (keyIsDown(87)) { //w
-        this.xSpeed -= Math.sin(this.direction);
-        this.ySpeed += Math.cos(this.direction);
-      }
-      if (keyIsDown(83)) { //s
-        this.xSpeed += Math.sin(this.direction);
-        this.ySpeed -= Math.cos(this.direction);
-      }
-      if (keyIsDown(82)) { //r
-        //c4ode
-      }//reload
-    }
+        if (keyIsDown(65)) { //a
+          this.direction -= 0.03;
+        }
+        if (keyIsDown(68)) { //d
+          this.direction += 0.03;
+        }
+        if (keyIsDown(87)) { //w
+          this.xSpeed -= Math.sin(this.direction);
+          this.ySpeed += Math.cos(this.direction);
+        }
+        if (keyIsDown(83)) { //s
+          this.xSpeed += Math.sin(this.direction);
+          this.ySpeed -= Math.cos(this.direction);
+        }
+  }
 
     this.xPos += this.xSpeed;
     this.yPos += this.ySpeed;
