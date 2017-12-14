@@ -20,6 +20,7 @@ var ybullet = -10;
 var dx;
 var dy;
 let score = 0;
+let eScore = 0;
 var value = false;
 
 function setup() {
@@ -60,12 +61,12 @@ function draw() {
 function scoreboard() {
   fill(51);
   textSize(textsize * 1.5);
-  text(score, 100, 100);
+  text(score / 10, 100, 100);
 }
 
 function game() {
-  dx = x - exbullet;
-  dy = y - eybullet;
+  dx = ex - xbullet;
+  dy = ey - ybullet;
 
   scoreboard();
 
