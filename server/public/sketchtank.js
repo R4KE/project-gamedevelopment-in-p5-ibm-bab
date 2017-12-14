@@ -1,4 +1,4 @@
-var socket, x = 100, y = 100, ex, ey, color, IDlength, eIDlength, edirection, exbullet, eybullet;
+var socket, x, y, ex, ey, color, IDlength, eIDlength, edirection, exbullet, eybullet;
 let cx;
 let cy;
 var ycanvas = innerHeight - 20;
@@ -17,15 +17,18 @@ var cooldowntimer = 100;
 var bulletspd = 5;
 var xbullet = -10;
 var ybullet = -10;
-let score = 0;
 var dx;
 var dy;
-let botsing = 0;
+let score = 0;
 var value = false;
 
 function setup() {
   createCanvas(xcanvas, ycanvas);
   angleMode(RADIANS);
+
+   x = random(0, innerWidth - 20);
+   y = random(0, innerHeight - 20);
+
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
   socket = io.connect('http://localhost:3000/');
@@ -54,14 +57,21 @@ function draw() {
   menu();
 }
 
+function scoreboard() {
+  fill(51);
+  textSize(textsize * 1.5);
+  text(score, 100, 100);
+}
+
 function game() {
   dx = x - exbullet;
   dy = y - eybullet;
 
+  scoreboard();
 
   if (sqrt(dx*dx + dy*dy) <= 40 + 10){
-    console.log("botsing");
-    botsing = 1;
+    console.log("hit");
+    score++;
   }
 
   sendmouse(x,y,direction,playerID,xbullet,ybullet);
@@ -80,9 +90,7 @@ function game() {
   noStroke();
   Player.controls();
   Player.render();
-  if (botsing == 0) {
-    Player.eRender();
-  }
+  Player.eRender();
 
   for (i = 0; i < bulletsshot; i++) {
     var bullet1 = bullets[i];
@@ -233,4 +241,7 @@ function sendmouse(xpos, ypos, direction, playerName, xBullet, yBullet) {
     xbullet: xBullet,
     ybullet: yBullet
   };
+
+  // Send that object to the socket
+  socket.emit('pos',data);
 }

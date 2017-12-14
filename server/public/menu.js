@@ -1,5 +1,5 @@
 let size = 10;
-let online = 1;
+let online = 2;
 let fadeout1 = 255;
 let fadein1 = 0;
 let fadeout2 = 255;
@@ -18,12 +18,12 @@ let click = 0;
 function menu() {
   background(255);
 
-  if (online < 2) {
+  /*if (online < 2) {
     //waiting();
-    admin();
+    menu();
   } if (online > 2) {
     tomuch();
-  } if (online == 2) {
+  }*/ if (online == 2) {
     fadein2 = 255;
     nickname();
   } if (stage == 2) {
@@ -116,7 +116,7 @@ function pressstart() {
   background(255);
 
   fill(51, 51, 51, fadein1);
-  textSize(50);
+  textSize(textsize);
   text("Hold any key to start.", innerWidth / 5, ytext);
 
   // press checker
