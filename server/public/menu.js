@@ -17,13 +17,7 @@ let click = 0;
 
 function menu() {
   background(255);
-
-  /*if (online < 2) {
-    //waiting();
-    menu();
-  } if (online > 2) {
-    tomuch();
-  }*/ if (online == 2) {
+  if (online == 2) {
     fadein2 = 255;
     nickname();
   } if (stage == 2) {

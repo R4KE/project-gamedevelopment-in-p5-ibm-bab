@@ -21,6 +21,7 @@ var dy;
 var score = 0;
 var eScore = 0;
 var value = false;
+var Eenx = 0;
 
 function setup() {
   createCanvas(xcanvas, ycanvas);
@@ -31,7 +32,7 @@ function setup() {
 
   // Start a socket connection to the server
   // Some day we would run this server somewhere else
-  socket = io.connect('http://localhost:3000/');
+  socket = io.connect('http://192.168.2.10:3000/');
   // We make a named event called 'mouse' and write an
   // anonymous callback function
   socket.on('pos',
@@ -78,6 +79,10 @@ function scoreboard() {
 function game() {
   dx = ex - xbullet;
   dy = ey - ybullet;
+
+  if (Eenx < 1) {
+    Eenx = 2;
+  }
 
   scoreboard();
 
@@ -200,11 +205,11 @@ function player() {
     translate(this.xPos,this.yPos);
     rotate(this.direction);
     rectMode(CENTER);
-    rect(0, 0, 50, 55);
+    rect(0, 0, 50, 50);
     noStroke();
     fill(219, 17, 17);
-    rect(-16.5, 0.5, 10, 59)// left shadow
-    rect(17.5, 0.5, 10, 59)// right shadow
+    rect(-16.5, 0.5, 10, 54)// left shadow
+    rect(17.5, 0.5, 10, 54)// right shadow
     noStroke();
     //fill(50);
     //ellipse(this.xbullet, this.ybullet, 5, 5);// draw bullet
@@ -230,11 +235,11 @@ function player() {
     translate(ex, ey);
     rotate(edirection);
     rectMode(CENTER);
-    rect(0, 0, 50, 55);
+    rect(0, 0, 50, 50);
     noStroke();
     fill(38, 132, 39);
-    rect(-16.5, 0.5, 10, 59)// left shadow
-    rect(17.5, 0.5, 10, 59)// right shadow
+    rect(-16.5, 0.5, 10, 54)// left shadow
+    rect(17.5, 0.5, 10, 54)// right shadow
     noStroke();
     fill(38, 132, 39);
     stroke(20);
@@ -261,7 +266,7 @@ function Bullet(_x, _y, _straal, _xspeed, _yspeed) {
   }
 
   this.beweeg = function() {
-    if (this.x < 200 || this.x > 300 || this.y < 150 || this.y > 250) {
+    if (this.x > 200 || this.x < 300 || this.y > 150 || this.y < 250) {
       if (this.x < 300 || this.x > 400 || this.y < 400 || this.y > 500) {
         if (this.x < 350 || this.x > 450 || this.y < 50 || this.y > 150) {
           if (this.x < 450 || this.x > 550 || this.y < 450 || this.y > 550) {
